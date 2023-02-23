@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BsCheckLg } from 'react-icons/bs';
-import { RxCross1 } from 'react-icons/rx';
-import { ImBin2 } from 'react-icons/im';
 import { AiOutlineFolderOpen, AiOutlinePlus } from 'react-icons/ai';
+import { ImBin2 } from 'react-icons/im';
+// import DeleteButton from '../../Shared/DeleteButton/DeleteButton';
+import RootInputField from '../RootInputField/RootInputField';
 
 
 const Home = () => {
@@ -29,13 +29,24 @@ const Home = () => {
 
     const handleCheck = event => {
         const form = event.target;
-        setNewFolder(form.value);
-
+        const rootFolderName = form.value;
+        const root = {
+            id: Math.floor(Math.random() * 100),
+            rootFolder: rootFolderName
+        }
+        setNewFolder([root]);
     }
 
     const handleCross = () => {
         const addAFolderToRootDiv = document.getElementById("AddAFolderToRoot");
         addAFolderToRootDiv.style.display = "none";
+        document.getElementById("form").reset();
+    };
+
+    const handleDelete = (id) => {
+        console.log(id);
+        const remaining = Folder.filter(Fol => Fol[0].id !== id);
+        setFolder(remaining);
     }
     return (
         <div className='mt-4 px-8'>
@@ -45,15 +56,15 @@ const Home = () => {
                 {
                     Folder && <li className='p-4'>
                         {
-                            Folder.map(Fol => <div key={Fol} className='group/item p-2 text-xl font-medium'>
+                            Folder.map(Fol => <div key={Fol[0].id} className='group/item p-2 text-xl font-medium'>
                                 <div className='flex items-center gap-2'>
                                     <AiOutlineFolderOpen className='text-2xl' />
-                                    <p>{Fol}</p>
-                                    <div class="flex items-center gap-2 group/edit invisible group-hover/item:visible ...">
+                                    <p>{Fol[0].rootFolder}</p>
+                                    <div className="flex items-center gap-2 group/edit invisible group-hover/item:visible ...">
                                         <button className='border-2 border-black rounded-full p-1 bg-black'>
                                             <AiOutlinePlus className='text-white text-xl font-bold' />
                                         </button>
-                                        <button className='border-2 border-black rounded-full p-1 bg-black'>
+                                        <button onClick={() => handleDelete(Fol[0].id)} className='border-2 border-black rounded-full p-1 bg-black'>
                                             <ImBin2 className='text-white text-xl font-bold' />
                                         </button>
                                     </div>
@@ -67,19 +78,11 @@ const Home = () => {
                 }
             </ul>
 
-            <section id='AddAFolderToRoot' className='hidden'>
-                <div className='border-2 border-black rounded-sm w-fit m-2 p-2 flex items-center gap-2'>
-                    <form className='flex items-center gap-2' onSubmit={handleSubmit}>
-                        <input onChange={handleCheck} id='input' type="text" className='border-2 border-orange-400 p-2 rounded-sm w-60 text-lg' required />
-                        <button type='submit' className='bg-black p-1 border-2 border-black rounded-sm'>
-                            <BsCheckLg className='text-white text-2xl' />
-                        </button>
-                    </form>
-                    <button className='border-2 border-black rounded-sm p-1' onClick={handleCross}>
-                        <RxCross1 className='text-black text-2xl' />
-                    </button>
-                </div>
-            </section>
+            <RootInputField
+                handleSubmit={handleSubmit}
+                handleCheck={handleCheck}
+                handleCross={handleCross}
+            />
         </div>
     );
 };
