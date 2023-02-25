@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import RootFolder from '../RootFolder/RootFolder';
 import RootInputField from '../RootInputField/RootInputField';
-
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = () => {
-    const [newFolder, setNewFolder] = useState('');
-    const [Folder, setFolder] = useState([]);
-    useEffect(() => {
+    const [newRootFolder, setNewRootFolder] = useState('');
+    const [rootFolder, setRootFolder] = useState([]);
 
-    });
+    const [newFile, setNewFile] = useState('');
+    const [file, setFile] = useState([]);
 
     const handleAddAFolderToRoot = () => {
         const addAFolderToRootDiv = document.getElementById("AddAFolderToRoot");
@@ -20,7 +20,7 @@ const Home = () => {
         event.preventDefault();
         const addAFolderToRootDiv = document.getElementById("AddAFolderToRoot");
         addAFolderToRootDiv.style.display = "none";
-        setFolder([...Folder, newFolder]);
+        setRootFolder([...rootFolder, newRootFolder]);
         const form = event.target;
         form.reset();
     };
@@ -29,10 +29,11 @@ const Home = () => {
         const form = event.target;
         const rootFolderName = form.value;
         const root = {
-            id: Math.floor(Math.random() * 100),
-            rootFolder: rootFolderName
+            id: uuidv4(),
+            rootFolder: rootFolderName,
+            children: [file]
         }
-        setNewFolder([root]);
+        setNewRootFolder([root]);
     }
 
     const handleCross = () => {
@@ -42,18 +43,17 @@ const Home = () => {
     };
 
     const handleDelete = (id) => {
-        console.log(id);
-        const remaining = Folder.filter(Fol => Fol[0].id !== id);
-        setFolder(remaining);
+        const remaining = rootFolder.filter(Fol => Fol[0].id !== id);
+        setRootFolder(remaining);
     }
     return (
         <div className='mt-4 px-8'>
             <button className='text-xl font-medium text-white p-2 bg-zinc-900 hover:bg-zinc-700 rounded-lg' onClick={handleAddAFolderToRoot}>Add A Folder To Root</button>
             <ul className='block'>
                 {
-                    Folder && <li className='p-4'>
+                    rootFolder && <li className='p-4'>
                         {
-                            Folder.map(Fol => <RootFolder
+                            rootFolder.map(Fol => <RootFolder
                                 key={Fol[0].id}
                                 Fol={Fol}
                                 handleDelete={handleDelete}
@@ -64,6 +64,10 @@ const Home = () => {
             </ul>
 
             <RootInputField
+                newFile={newFile}
+                setNewFile={setNewFile}
+                file={file}
+                setFile={setFile}
                 handleSubmit={handleSubmit}
                 handleCheck={handleCheck}
                 handleCross={handleCross}
