@@ -10,6 +10,8 @@ import FolderInputField from '../FolderInputField/FolderInputField';
 const RootFolder = ({ Fol, handleDelete }) => {
     const [newFile, setNewFile] = useState('');
     const [file, setFile] = useState([]);
+    const [newFolder, setNewFolder] = useState('');
+    const [folder, setFolder] = useState([]);
 
     const addButton = () => {
         const addButtonDiv = document.getElementById(`button-${Fol[0].id}`);
@@ -43,11 +45,9 @@ const RootFolder = ({ Fol, handleDelete }) => {
         const fileInputFieldDiv = document.getElementById(`fileInput-${Fol[0].id}`);
         fileInputFieldDiv.style.display = "none";
         document.getElementById("fileForm").reset();
-    };
-    const handleFolderCross = () => {
-        const fileInputFieldDiv = document.getElementById(`folderInput-${Fol[0].id}`);
-        fileInputFieldDiv.style.display = "none";
-        document.getElementById("fileForm").reset();
+        const folderInputFieldDiv = document.getElementById(`folderInput-${Fol[0].id}`);
+        folderInputFieldDiv.style.display = "none";
+        document.getElementById("folderForm").reset();
     };
     const handleDel = (id) => {
         const remainingFile = file.filter(fil => fil[0].id !== id);
@@ -55,10 +55,6 @@ const RootFolder = ({ Fol, handleDelete }) => {
         const remainingFolder = folder.filter(fold => fold[0].id !== id);
         setFolder(remainingFolder);
     };
-
-    const [newFolder, setNewFolder] = useState('');
-    const [folder, setFolder] = useState([]);
-
     const handleFolder = () => {
         const addFolderDiv = document.getElementById(`button-${Fol[0].id}`);
         addFolderDiv.style.display = "none";
@@ -138,7 +134,7 @@ const RootFolder = ({ Fol, handleDelete }) => {
             <div id={`folderInput-${Fol[0].id}`} className='hidden'>
                 <FolderInputField
                     handleFolderSubmit={handleFolderSubmit}
-                    handleFolderCross={handleFolderCross}
+                    handleCross={handleCross}
                     handleFolderCheck={handleFolderCheck}
                 />
             </div>
