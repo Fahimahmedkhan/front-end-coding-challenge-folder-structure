@@ -4,6 +4,8 @@ import { ImBin2 } from 'react-icons/im';
 import FileInputField from '../FileInputField/FileInputField';
 import { v4 as uuidv4 } from 'uuid';
 import Folder from '../Folder/Folder';
+import File from '../File/File';
+import FolderInputField from '../FolderInputField/FolderInputField';
 
 const RootFolder = ({ Fol, handleDelete }) => {
     const [newFile, setNewFile] = useState('');
@@ -13,19 +15,12 @@ const RootFolder = ({ Fol, handleDelete }) => {
         const addButtonDiv = document.getElementById(`button-${Fol[0].id}`);
         addButtonDiv.style.display = "block";
     };
-    const handleFile = (id) => {
+    const handleFile = () => {
         const addFileButtonDiv = document.getElementById(`button-${Fol[0].id}`);
         addFileButtonDiv.style.display = "none";
         const fileInputFieldDiv = document.getElementById(`fileInput-${Fol[0].id}`);
         fileInputFieldDiv.style.display = "block";
     };
-    const handleFolder = (id) => {
-        const addFolderDiv = document.getElementById(`button-${Fol[0].id}`);
-        addFolderDiv.style.display = "none";
-        const fileInputFieldDiv = document.getElementById(`fileInput-${Fol[0].id}`);
-        fileInputFieldDiv.style.display = "block";
-    };
-
     const handleFileSubmit = (event) => {
         event.preventDefault();
         const fileInputFieldDiv = document.getElementById(`fileInput-${Fol[0].id}`);
@@ -36,10 +31,10 @@ const RootFolder = ({ Fol, handleDelete }) => {
     };
     const handleFileCheck = (event) => {
         const form = event.target;
-        const folderName = form.value;
+        const fileName = form.value;
         const folder = {
             id: uuidv4(),
-            rootFolder: folderName,
+            rootFolder: fileName,
             children: [file]
         }
         setNewFile([folder]);
@@ -49,10 +44,46 @@ const RootFolder = ({ Fol, handleDelete }) => {
         fileInputFieldDiv.style.display = "none";
         document.getElementById("fileForm").reset();
     };
+    const handleFolderCross = () => {
+        const fileInputFieldDiv = document.getElementById(`folderInput-${Fol[0].id}`);
+        fileInputFieldDiv.style.display = "none";
+        document.getElementById("fileForm").reset();
+    };
     const handleDel = (id) => {
-        const remaining = file.filter(fil => fil[0].id !== id);
-        setFile(remaining);
-    }
+        const remainingFile = file.filter(fil => fil[0].id !== id);
+        setFile(remainingFile);
+        const remainingFolder = folder.filter(fold => fold[0].id !== id);
+        setFolder(remainingFolder);
+    };
+
+    const [newFolder, setNewFolder] = useState('');
+    const [folder, setFolder] = useState([]);
+
+    const handleFolder = () => {
+        const addFolderDiv = document.getElementById(`button-${Fol[0].id}`);
+        addFolderDiv.style.display = "none";
+        const fileInputFieldDiv = document.getElementById(`folderInput-${Fol[0].id}`);
+        fileInputFieldDiv.style.display = "block";
+    };
+    const handleFolderSubmit = (event) => {
+        event.preventDefault();
+        const folderInputFieldDiv = document.getElementById(`folderInput-${Fol[0].id}`);
+        folderInputFieldDiv.style.display = "none";
+        setFolder([...folder, newFolder]);
+        const form = event.target;
+        form.reset();
+    };
+    const handleFolderCheck = (event) => {
+        const form = event.target;
+        const folderName = form.value;
+        const folder = {
+            id: uuidv4(),
+            rootFolder: folderName,
+            children: [file]
+        }
+        setNewFolder([folder]);
+    };
+
     return (
         <div className='p-2 text-xl font-medium mb-2'>
             <div className='group/item '>
@@ -72,17 +103,24 @@ const RootFolder = ({ Fol, handleDelete }) => {
                 </div>
             </div>
             <ul className='block'>
-                {
-                    file && <li className='p-4'>
-                        {
-                            file.map(fil => <Folder
-                                key={fil[0].id}
-                                fil={fil}
-                                handleDel={handleDel}
-                            />)
-                        }
-                    </li>
-                }
+                <li className=''>
+                    {
+                        file.map(fil => <File
+                            key={fil[0].id}
+                            fil={fil}
+                            handleDel={handleDel}
+                        />)
+                    }
+                </li>
+                <li className=''>
+                    {
+                        folder.map(fold => <Folder
+                            key={fold[0].id}
+                            fold={fold}
+                            handleDel={handleDel}
+                        />)
+                    }
+                </li>
             </ul>
             <div id={`button-${Fol[0].id}`} className='hidden'>
                 <div className='flex items-center gap-4 mt-2 '>
@@ -94,8 +132,14 @@ const RootFolder = ({ Fol, handleDelete }) => {
                 <FileInputField
                     handleFileSubmit={handleFileSubmit}
                     handleCross={handleCross}
-                    addButton={addButton}
                     handleFileCheck={handleFileCheck}
+                />
+            </div>
+            <div id={`folderInput-${Fol[0].id}`} className='hidden'>
+                <FolderInputField
+                    handleFolderSubmit={handleFolderSubmit}
+                    handleFolderCross={handleFolderCross}
+                    handleFolderCheck={handleFolderCheck}
                 />
             </div>
         </div>
