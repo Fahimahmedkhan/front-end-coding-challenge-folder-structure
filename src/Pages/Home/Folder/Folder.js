@@ -4,8 +4,8 @@ import { ImBin2 } from 'react-icons/im';
 
 const Folder = ({ fold, handleDel }) => {
     return (
-        <div className='group/item p-2 text-xl font-medium mb-2'>
-            <div className='flex items-center gap-2'>
+        <div className='group/item p-2 pb-0 text-xl font-medium'>
+            <div className='flex items-center gap-3'>
                 <AiOutlineFolderOpen className='text-2xl' />
                 <p>{fold[0].rootFolder}</p>
                 <div className="group/edit invisible group-hover/item:visible ...">

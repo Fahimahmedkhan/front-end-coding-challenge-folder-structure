@@ -1,12 +1,12 @@
 import React from 'react';
-import { AiFillFile } from 'react-icons/ai';
+import { AiOutlineFile } from 'react-icons/ai';
 import { ImBin2 } from 'react-icons/im';
 
 const File = ({ fil, handleDel }) => {
     return (
-        <div className='group/item p-2 text-xl font-medium mb-2'>
+        <div className='group/item p-2 pb-0 text-xl font-medium'>
             <div className='flex items-center gap-2'>
-                <AiFillFile className='text-2xl' />
+                <AiOutlineFile className='text-2xl' />
                 <p>{fil[0].rootFolder}</p>
                 <div className="group/edit invisible group-hover/item:visible ...">
                     <div className='flex items-center gap-2 '>

@@ -81,13 +81,13 @@ const RootFolder = ({ Fol, handleDelete }) => {
     };
 
     return (
-        <div className='p-2 text-xl font-medium mb-2'>
+        <div className='p-2 text-xl font-medium'>
             <div className='group/item '>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-3'>
                     <AiOutlineFolderOpen className='text-2xl' />
                     <p>{Fol[0].rootFolder}</p>
                     <div className="group/edit invisible group-hover/item:visible ...">
-                        <div className='flex items-center gap-2 '>
+                        <div className='flex items-center gap-3 '>
                             <button onClick={addButton} className='border-2 border-black rounded-full p-1 bg-black'>
                                 <AiOutlinePlus className='text-white text-xl font-bold' />
                             </button>
@@ -98,7 +98,7 @@ const RootFolder = ({ Fol, handleDelete }) => {
                     </div>
                 </div>
             </div>
-            <ul className='block'>
+            <ul className='block ml-6'>
                 <li className=''>
                     {
                         file.map(fil => <File
